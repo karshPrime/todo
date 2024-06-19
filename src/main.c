@@ -1,24 +1,20 @@
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <getopt.h>
 
 #include "manage.h"
 #include "display.h"
 
-static int verbose_flag;
-
-int
-main (int argc, char** argv)
+int main (int argc, char** argv)
 {
     int flag = 0;
-    bool lMakeNew, lMakeLocal, lMakeIgnored = false;
+    bool lMakeNew = false, lMakeLocal = false, lMakeIgnored = false;
 
-    while ( flag != -1 )
+    while (1)
     {
+        if (flag == -1) break;
+
         static struct option opts[] = {
-            {"verbose"  , no_argument,  &verbose_flag, 1},
-            {"breif"    , no_argument,  &verbose_flag, 0},
             {"new"      , no_argument,  0, 'n'},
             {"local"    , no_argument,  0, 'l'},
             {"unlocal"  , no_argument,  0, 'L'},
@@ -33,11 +29,8 @@ main (int argc, char** argv)
             {0, 0, 0, 0}
         };
 
-        if (verbose_flag)
-            puts ("verbose flag is set");
-
         int opt_indx = 0;
-        flag = getopt_long(argc, argv, "nlLiIPHc:p:C:h:", opts, &opt_indx);
+        flag = getopt_long(argc, argv, ":nlLiIPHc:p:C:h:", opts, &opt_indx);
 
         switch (flag)
         {
@@ -64,11 +57,10 @@ main (int argc, char** argv)
                 break;
 
             case '?':
-                printf("passed parameter: ?\n");
+                fprintf(stderr, "Unknown option: %c\n", optopt);
                 break;
 
             default:
-                printf("no?\n");
                 break;
         }
     }

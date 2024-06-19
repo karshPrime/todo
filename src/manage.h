@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <stdio.h>
 #include <stdbool.h>
 
 void create_new(bool aLocal, bool aIgnore);
