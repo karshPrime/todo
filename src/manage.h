@@ -12,6 +12,7 @@
 #include <stdbool.h>
 
 void create_new(bool aLocal, bool aIgnore);
+void open_todo();
 
 void make_local();
 void make_unlocal();

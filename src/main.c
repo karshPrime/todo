@@ -9,11 +9,10 @@ int main (int argc, char** argv)
 {
     int flag = 0;
     bool lMakeNew = false, lMakeLocal = false, lMakeIgnored = false;
+    bool open = true; // open todo file in $EDITOR
 
     while (1)
     {
-        if (flag == -1) break;
-
         static struct option opts[] = {
             {"new"      , no_argument,  0, 'n'},
             {"local"    , no_argument,  0, 'l'},
@@ -31,6 +30,7 @@ int main (int argc, char** argv)
 
         int opt_indx = 0;
         flag = getopt_long(argc, argv, ":nlLiIPHc:p:C:h:", opts, &opt_indx);
+        if (flag == -1) break;
 
         switch (flag)
         {
@@ -63,6 +63,7 @@ int main (int argc, char** argv)
             default:
                 break;
         }
+        open = false;
     }
 
     if (lMakeNew)
@@ -71,6 +72,9 @@ int main (int argc, char** argv)
         make_ignored();
     else if (lMakeLocal)
         make_local();
+
+    if (open)
+        open_todo();
 
     return 0;
 }

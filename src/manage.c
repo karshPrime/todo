@@ -8,6 +8,11 @@ void create_new(bool aLocal, bool aIgnore)
     printf("create_new. local=%d, ignore=%d\n", aLocal, aIgnore);
 }
 
+void open_todo()
+{
+    printf("$EDITOR todo\n");
+}
+
 void make_local()
 {
     printf("make_local\n");
