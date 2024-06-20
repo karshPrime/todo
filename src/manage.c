@@ -1,7 +1,13 @@
 
-// manage.h
+// manage.c
 
 #include "manage.h"
+
+bool no_config_found()
+{
+    fprintf(stderr, "No TODO found. Create new with -n flag.\n");
+    return true;
+}
 
 void create_new(bool aLocal, bool aIgnore)
 {

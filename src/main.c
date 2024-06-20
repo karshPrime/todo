@@ -8,8 +8,8 @@
 int main (int argc, char** argv)
 {
     int flag = 0;
-    bool lMakeNew = false, lMakeLocal = false, lMakeIgnored = false;
-    bool open = true; // open todo file in $EDITOR
+    bool lCreateNew = false, lMakeLocal = false, lMakeIgnored = false;
+    bool lOpenTodo = true; // open todo file in $EDITOR
 
     while (1)
     {
@@ -34,19 +34,14 @@ int main (int argc, char** argv)
 
         switch (flag)
         {
-            case 'n': lMakeNew = true; break;
+            case 'n': lCreateNew = true; break;
             case 'l': lMakeLocal = true; break;
-            case 'L': make_unlocal(); break;
             case 'i': lMakeIgnored = true; break;
-            case 'I': make_unignored(); break;
-            case 'P': print_raw(); break;
-            case 'H': print_highest(); break;
-            case 'c': count_specific(optarg); break;
-            case 'p': priority_specific(optarg); break;
-            case 'C': config_set(optarg); break;
-            case 'h': help_specific(optarg); break;
 
             case ':': // when called without arguments
+                if (no_config_found())
+                    return 1;
+
                 switch (optopt)
                 {
                     case 'c': count_all(); break;
@@ -61,19 +56,41 @@ int main (int argc, char** argv)
                 break;
 
             default:
+                if (no_config_found())
+                    return 1;
+
+                switch (flag)
+                {
+                    case 'L': make_unlocal(); break;
+                    case 'I': make_unignored(); break;
+                    case 'P': print_raw(); break;
+                    case 'H': print_highest(); break;
+                    case 'c': count_specific(optarg); break;
+                    case 'p': priority_specific(optarg); break;
+                    case 'C': config_set(optarg); break;
+                    case 'h': help_specific(optarg); break;
+                }
                 break;
         }
-        open = false;
+        lOpenTodo = false;
     }
 
-    if (lMakeNew)
+    if (lCreateNew)
+    {
         create_new(lMakeLocal, lMakeIgnored);
-    else if (lMakeIgnored)
+        return 0;
+    }
+
+    if (no_config_found())
+        return 1;
+
+    if (lMakeIgnored)
         make_ignored();
-    else if (lMakeLocal)
+
+    if (lMakeLocal)
         make_local();
 
-    if (open)
+    if (lOpenTodo) 
         open_todo();
 
     return 0;

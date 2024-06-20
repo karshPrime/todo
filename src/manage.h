@@ -11,6 +11,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+bool no_config_found();
+
 void create_new(bool aLocal, bool aIgnore);
 void open_todo();
 
