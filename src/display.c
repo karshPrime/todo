@@ -1,6 +1,7 @@
 
-// display.h
+// display.c
 
+#include <stdio.h>
 #include <string.h>
 
 #include "display.h"
@@ -13,7 +14,7 @@ void help_overview()
 
 void help_specific(char* aSection)
 {
-    if (!strcmp(aSection, "command"))
+    if (!strcmp(aSection, "cmd"))
         printf("%s\n", HELP_COMMAND);
 
     else if (!strcmp(aSection, "syntax"))
