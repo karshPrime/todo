@@ -8,13 +8,13 @@
 
 #pragma once
 
-#include <stdio.h>
 #include <stdbool.h>
 
-bool no_config_found();
+bool no_todo_found();
 
-void create_new(bool aLocal, bool aIgnore);
+void new_todo(bool aLocal, bool aIgnore);
 void open_todo();
+void delete_todo();
 
 void make_local();
 void make_unlocal();
@@ -22,6 +22,6 @@ void make_unlocal();
 void make_ignored();
 void make_unignored();
 
+void config_init();
 void config_open();
-void config_set(char* aSetting);
 

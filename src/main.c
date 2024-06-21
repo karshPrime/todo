@@ -11,10 +11,13 @@ int main (int argc, char** argv)
     bool lCreateNew = false, lMakeLocal = false, lMakeIgnored = false;
     bool lOpenTodo = true; // open todo file in $EDITOR
 
+    config_init();
+
     while (1)
     {
         static struct option opts[] = {
             {"new"      , no_argument,  0, 'n'},
+            {"delete"   , no_argument,  0, 'd'},
             {"local"    , no_argument,  0, 'l'},
             {"unlocal"  , no_argument,  0, 'L'},
             {"ignore"   , no_argument,  0, 'i'},
@@ -41,13 +44,12 @@ int main (int argc, char** argv)
             case 'C': config_open(); return 0;
 
             case ':': // when called without arguments
-                if (optopt == 'h')
-                {
+                if (optopt == 'h') {
                     help_overview();
                     return 0;
                 }
 
-                if (no_config_found())
+                if (no_todo_found())
                     return 1;
 
                 if (optopt == 'c')
@@ -63,11 +65,12 @@ int main (int argc, char** argv)
                 break;
 
             default:
-                if (no_config_found())
+                if (no_todo_found())
                     return 1;
 
                 switch (flag)
                 {
+                    case 'd': delete_record(); break;
                     case 'L': make_unlocal(); break;
                     case 'I': make_unignored(); break;
                     case 'P': print_raw(); break;
@@ -80,13 +83,12 @@ int main (int argc, char** argv)
         lOpenTodo = false;
     }
 
-    if (lCreateNew)
-    {
+    if (lCreateNew) {
         create_new(lMakeLocal, lMakeIgnored);
         return 0;
     }
 
-    if (no_config_found())
+    if (no_todo_found())
         return 1;
 
     if (lMakeIgnored)
