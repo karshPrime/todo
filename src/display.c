@@ -1,16 +1,26 @@
 
 // display.h
 
+#include <string.h>
+
 #include "display.h"
+#include "help.h"
 
 void help_overview()
 {
-    printf("help_overview\n");
+    printf("%s\n", HELP_OVERVIEW);
 }
 
 void help_specific(char* aSection)
 {
-    printf("help_specific, %s\n", aSection);
+    if (!strcmp(aSection, "command"))
+        printf("%s\n", HELP_COMMAND);
+
+    else if (!strcmp(aSection, "syntax"))
+        printf("%s\n", HELP_SYNTAX);
+
+    else
+        printf("Error: Invalid option.\n");
 }
 
 void print_highest()

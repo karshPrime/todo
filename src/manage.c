@@ -44,8 +44,3 @@ void config_open()
     printf("config_open\n");
 }
 
-void config_set(char* aSetting)
-{
-    printf("config_set, %s\n", aSetting);
-}
-
