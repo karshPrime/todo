@@ -70,7 +70,7 @@ int main (int argc, char** argv)
 
                 switch (flag)
                 {
-                    case 'd': delete_record(); break;
+                    case 'd': delete_todo(); break;
                     case 'L': make_unlocal(); break;
                     case 'I': make_unignored(); break;
                     case 'P': print_raw(); break;
@@ -84,7 +84,7 @@ int main (int argc, char** argv)
     }
 
     if (lCreateNew) {
-        create_new(lMakeLocal, lMakeIgnored);
+        new_todo(lMakeLocal, lMakeIgnored);
         return 0;
     }
 

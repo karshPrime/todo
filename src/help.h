@@ -11,7 +11,7 @@ const char* HELP_OVERVIEW = ""
 "Meta Options:\n"
 "  -h, --help {cmd|syntax}   Show list of command-line options\n"
 "  -C, --config              Configure default operations\n"
-"  -v, --version             Show version of todo\n"
+"  -v, --version             Show version of todo"
 "";
 
 
@@ -48,7 +48,7 @@ const char* HELP_COMMAND = ""
 "     $ todo -H\n"
 "\n"
 "  5. Print all TODOs with !! priority\n"
-"     $ todo -p !!\n"
+"     $ todo -p !!"
 "";
 
 // todo --help syntax
