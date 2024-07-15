@@ -3,26 +3,26 @@ package main
 
 import (
     "fmt"
-    "todo/cmd"
+	"todo/cmd"
 )
 
 func main() {
-    // initialise config file
-    cmd.Config_Init()
+	// initialise config file
+	cmd.Config_Init()
 
-    // parse flags
+	// parse flags
 
-    // make appropriate functions
+	// make appropriate functions
 
-    // open todo
-    cmd.Open_Todo()
+	// open todo
+	cmd.Open_Todo()
 }
 
 func help_overview() {
-    //
+	//
 }
 
 func help_specific(aSection string ) {
-    //
+	//
 }
 
