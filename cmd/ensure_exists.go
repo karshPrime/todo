@@ -11,25 +11,25 @@ import(
 	"errors"
 )
 
-// return if a new dir had to be created
-func ensure_exists_dir(aPath string) bool {
+// return full dir path
+func ensure_exists_dir(aPath string) string {
 	lHome, _ := os.UserHomeDir()
 	lPath := lHome + aPath
 
 	_, aPath_exists := os.Stat(lPath)
 	if errors.Is(aPath_exists, os.ErrNotExist) {
-		create_dir_err := os.MkdirAll(lPath, 0770)
+		lCreateDirErr := os.MkdirAll(lPath, 0770)
 
-		if create_dir_err != nil {
-			fmt.Fprintf(os.Stderr, "Error EED1: %v", create_dir_err)
+		if lCreateDirErr != nil {
+			fmt.Fprintln(os.Stderr, "Error EED1:", lCreateDirErr)
+			os.Exit(1)
 		}
-		return true
 	}
-	return false
+	return lPath
 }
 
-// return if a new file had to be created
-func ensure_exists_file(aFile string, aDefaultText []string) bool {
+// return full file path
+func ensure_exists_file(aFile string, aDefaultText []string) string {
 	lHome, _ := os.UserHomeDir()
 	lFile := lHome + aFile
 
@@ -38,20 +38,19 @@ func ensure_exists_file(aFile string, aDefaultText []string) bool {
 		lFileIO, lFileIOError := os.Create(lFile)
 
 		if lFileIOError != nil {
-			fmt.Fprintf(os.Stderr, "Error EEF1: %v", lFileIOError)
-			return false
+			fmt.Fprintln(os.Stderr, "Error EEF1:", lFileIOError)
+			os.Exit(1)
 		}
 		defer lFileIO.Close()
 
 		for _, lLine := range aDefaultText {
 			_, lLineError := fmt.Fprintf(lFileIO, "%s\n", lLine)
 			if lLineError != nil {
-				fmt.Fprintf(os.Stderr, "Error EEF2: %v", lLineError)
+				fmt.Fprintln(os.Stderr, "Error EEF2:", lLineError)
+				return ""
 			}
 		}
-
-		return true
 	}
-	return false
+	return lFile
 }
 
