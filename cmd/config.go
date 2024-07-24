@@ -6,32 +6,54 @@
 package cmd
 
 import (
+	"os"
 	"fmt"
+	"reflect"
 	"github.com/BurntSushi/toml"
 )
 
 //-- local ---------------------------------------------------------------------
 
-type ConfigDefault struct {
-	Local		bool
-	Ignore		bool
-	Location	string
-}
+type (
+	config struct {
+		Default		map[string]configDefault
+		Repository	map[string]configRepository
+		Database	map[string]configDatabase
+	}
 
-type ConfigRepository struct {
-	Auth		bool
-	Host		string
-}
+	configDefault struct {
+		Local		bool
+		Ignore		bool
+		Location	string
+	}
 
-type ConfigDatabase struct {
-	ID			string
-	Local		bool
-	Ignore		bool
-}
+	configRepository struct {
+		Auth		bool
+		Host		string
+	}
 
-func parse_config(aProperty *string) string {
-	// var conf Config
-	// _, err := toml.Decode(tomlData, &conf)
+	configDatabase struct {
+		ID			string
+		Local		bool
+		Ignore		bool
+	}
+)
+
+func parse_config(aProperty *string, aConfigPath string) string {
+	var conf config
+	_, lDecodeError := toml.Decode("", &conf)
+	if lDecodeError != nil {
+		fmt.Fprintln(os.Stderr, "Error ConfigPC:", lDecodeError)
+		os.Exit(1)
+	}
+
+	typ, val := reflect.TypeOf(conf), reflect.ValueOf(conf)
+	for i := 0; i < typ.NumField(); i++ {
+		fmt.Printf("%-11s → %v\n", typ.Field(i).Name, val.Field(i).Interface())
+	}
+
+	fmt.Printf("to make use of: %v, %v for compile.\n", *aProperty, aConfigPath)
+	fmt.Printf("config: %v\n", conf)
 
 	return ""
 }
@@ -61,15 +83,13 @@ func default_config() []string {
 
 //-- global --------------------------------------------------------------------
 
-func Config_Init() {
+func Config(aProperty string) string {
 	ensure_exists_dir("/.config")
-	ensure_exists_file("/.config/todogo.toml", default_config())
-}
+	lConfigPath := ensure_exists_file("/.config/todogo.toml", default_config())
 
-func Config_Read(aProperty *string) string {
-	lConfig := parse_config(aProperty)
+	lConfig := parse_config(&aProperty, lConfigPath)
 	if lConfig == "" {
-		return default_properties[*aProperty]
+		return default_properties[aProperty]
 	}
 
 	return lConfig
